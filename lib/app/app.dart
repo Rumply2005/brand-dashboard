@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:brand_dashboard/features/products/presentation/screens/supply_items_screen.dart';
 import 'package:brand_dashboard/features/products/presentation/screens/products_screen.dart';
+import 'package:brand_dashboard/features/customers/presentation/screens/customers_screen.dart';
 
 /// Root widget of the Brand Dashboard application.
 class App extends StatelessWidget {
@@ -65,9 +66,9 @@ class MainScreen extends StatefulWidget {
 class _MainScreenState extends State<MainScreen> {
   int _currentIndex = 0;
 
-  // All main screens of the app
   final List<Widget> _screens = const [
     ProductsScreen(),
+    CustomersScreen(),
     SupplyItemsScreen(),
   ];
 
@@ -85,6 +86,11 @@ class _MainScreenState extends State<MainScreen> {
             icon: Icon(Icons.checkroom_outlined),
             selectedIcon: Icon(Icons.checkroom),
             label: 'Productos',
+          ),
+          NavigationDestination(
+            icon: Icon(Icons.people_outline),
+            selectedIcon: Icon(Icons.people),
+            label: 'Clientes',
           ),
           NavigationDestination(
             icon: Icon(Icons.inventory_2_outlined),

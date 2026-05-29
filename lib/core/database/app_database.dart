@@ -7,29 +7,38 @@ import 'package:path/path.dart' as p;
 import 'package:brand_dashboard/features/products/data/models/supply_item_table.dart';
 import 'package:brand_dashboard/features/products/data/models/product_base_table.dart';
 import 'package:brand_dashboard/features/products/data/models/product_variant_table.dart';
+import 'package:brand_dashboard/features/customers/data/models/customer_table.dart';
+import 'package:brand_dashboard/features/customers/data/models/sale_table.dart';
 
 part 'app_database.g.dart';
 
 /// Central database class for the Brand Dashboard application.
-/// Version 2 adds ProductBases and ProductVariants tables.
+/// v1 → SupplyItems
+/// v2 → ProductBases, ProductVariants
+/// v3 → Customers, Sales
 @DriftDatabase(tables: [
   SupplyItems,
   ProductBases,
   ProductVariants,
+  Customers,
+  Sales,
 ])
 class AppDatabase extends _$AppDatabase {
   AppDatabase() : super(_openConnection());
 
   @override
-  int get schemaVersion => 2;
+  int get schemaVersion => 3;
 
   @override
   MigrationStrategy get migration => MigrationStrategy(
     onUpgrade: (migrator, from, to) async {
-      // Migration from v1 to v2: add new product tables
       if (from < 2) {
         await migrator.createTable(productBases);
         await migrator.createTable(productVariants);
+      }
+      if (from < 3) {
+        await migrator.createTable(customers);
+        await migrator.createTable(sales);
       }
     },
   );
