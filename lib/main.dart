@@ -4,7 +4,7 @@ import 'app/app.dart';
 
 void main() {
   runApp(
-    const ProviderScope(    // ← debe estar aquí
+    const ProviderScope(
       child: App(),
     ),
   );

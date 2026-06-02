@@ -3,8 +3,8 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:brand_dashboard/features/products/presentation/screens/supply_items_screen.dart';
 import 'package:brand_dashboard/features/products/presentation/screens/products_screen.dart';
 import 'package:brand_dashboard/features/customers/presentation/screens/customers_screen.dart';
+import 'package:brand_dashboard/features/dashboard/presentation/screens/dashboard_screen.dart';
 
-/// Root widget of the Brand Dashboard application.
 class App extends StatelessWidget {
   const App({super.key});
 
@@ -21,14 +21,12 @@ class App extends StatelessWidget {
 
   ThemeData _buildDarkTheme() {
     const seedColor = Color(0xFFE8E0D0);
-
     final colorScheme = ColorScheme.fromSeed(
       seedColor: seedColor,
       brightness: Brightness.dark,
       surface: const Color(0xFF121212),
       onSurface: const Color(0xFFE8E0D0),
     );
-
     return ThemeData(
       useMaterial3: true,
       colorScheme: colorScheme,
@@ -55,7 +53,6 @@ class App extends StatelessWidget {
   }
 }
 
-/// Main screen with bottom navigation bar.
 class MainScreen extends StatefulWidget {
   const MainScreen({super.key});
 
@@ -67,6 +64,7 @@ class _MainScreenState extends State<MainScreen> {
   int _currentIndex = 0;
 
   final List<Widget> _screens = const [
+    DashboardScreen(),
     ProductsScreen(),
     CustomersScreen(),
     SupplyItemsScreen(),
@@ -82,6 +80,11 @@ class _MainScreenState extends State<MainScreen> {
           setState(() => _currentIndex = index);
         },
         destinations: const [
+          NavigationDestination(
+            icon: Icon(Icons.bar_chart_outlined),
+            selectedIcon: Icon(Icons.bar_chart),
+            label: 'Dashboard',
+          ),
           NavigationDestination(
             icon: Icon(Icons.checkroom_outlined),
             selectedIcon: Icon(Icons.checkroom),
