@@ -26,12 +26,14 @@ dependencies:
   # UI
   google_fonts: ^6.2.1
 
+  # Profile customization  ← agrégalas aquí
+  image_picker: ^1.1.2
+  shared_preferences: ^2.3.2
+
 dev_dependencies:
   flutter_test:
     sdk: flutter
   flutter_lints: ^4.0.0
-
-  # Code generators
   build_runner: ^2.4.9
   riverpod_generator: ^2.4.0
   drift_dev: ^2.18.0

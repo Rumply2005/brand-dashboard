@@ -9,25 +9,30 @@ import 'package:brand_dashboard/features/products/data/models/product_base_table
 import 'package:brand_dashboard/features/products/data/models/product_variant_table.dart';
 import 'package:brand_dashboard/features/customers/data/models/customer_table.dart';
 import 'package:brand_dashboard/features/customers/data/models/sale_table.dart';
+import 'package:brand_dashboard/features/costs/data/models/product_recipe_table.dart';
+import 'package:brand_dashboard/features/costs/data/models/recipe_item_table.dart';
 
 part 'app_database.g.dart';
 
-/// Central database class for the Brand Dashboard application.
+/// Central database — Brand Dashboard
 /// v1 → SupplyItems
 /// v2 → ProductBases, ProductVariants
 /// v3 → Customers, Sales
+/// v4 → ProductRecipes, RecipeItems
 @DriftDatabase(tables: [
   SupplyItems,
   ProductBases,
   ProductVariants,
   Customers,
   Sales,
+  ProductRecipes,
+  RecipeItems,
 ])
 class AppDatabase extends _$AppDatabase {
   AppDatabase() : super(_openConnection());
 
   @override
-  int get schemaVersion => 3;
+  int get schemaVersion => 4;
 
   @override
   MigrationStrategy get migration => MigrationStrategy(
@@ -40,11 +45,14 @@ class AppDatabase extends _$AppDatabase {
         await migrator.createTable(customers);
         await migrator.createTable(sales);
       }
+      if (from < 4) {
+        await migrator.createTable(productRecipes);
+        await migrator.createTable(recipeItems);
+      }
     },
   );
 }
 
-/// Opens the SQLite connection using the device's documents directory.
 LazyDatabase _openConnection() {
   return LazyDatabase(() async {
     final dbFolder = await getApplicationDocumentsDirectory();

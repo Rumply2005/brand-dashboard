@@ -1,28 +1,47 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:brand_dashboard/features/products/presentation/screens/supply_items_screen.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:brand_dashboard/features/dashboard/presentation/screens/dashboard_screen.dart';
 import 'package:brand_dashboard/features/products/presentation/screens/products_screen.dart';
 import 'package:brand_dashboard/features/customers/presentation/screens/customers_screen.dart';
-import 'package:brand_dashboard/features/dashboard/presentation/screens/dashboard_screen.dart';
+import 'package:brand_dashboard/features/costs/presentation/screens/calculator_screen.dart';
+import 'package:brand_dashboard/features/products/presentation/screens/supply_items_screen.dart';
+import 'package:brand_dashboard/features/settings/presentation/screens/profile_screen.dart';
+import 'package:brand_dashboard/features/settings/presentation/providers/profile_provider.dart';
 
 class App extends StatelessWidget {
   const App({super.key});
 
   @override
   Widget build(BuildContext context) {
+    return const _AppWithTheme();
+  }
+}
+
+/// Wraps the app with dynamic theme from brand profile.
+class _AppWithTheme extends ConsumerWidget {
+  const _AppWithTheme();
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final profileAsync = ref.watch(brandProfileProvider);
+
+    // Use default color while loading
+    final accentColor = profileAsync.value?.accentColor
+        ?? const Color(0xFFB8860B);
+
     return MaterialApp(
       title: 'Brand Dashboard',
       debugShowCheckedModeBanner: false,
       themeMode: ThemeMode.dark,
-      darkTheme: _buildDarkTheme(),
+      darkTheme: _buildDarkTheme(accentColor),
       home: const MainScreen(),
     );
   }
 
-  ThemeData _buildDarkTheme() {
-    const seedColor = Color(0xFFE8E0D0);
+  ThemeData _buildDarkTheme(Color accentColor) {
     final colorScheme = ColorScheme.fromSeed(
-      seedColor: seedColor,
+      seedColor: accentColor,
       brightness: Brightness.dark,
       surface: const Color(0xFF121212),
       onSurface: const Color(0xFFE8E0D0),
@@ -67,7 +86,9 @@ class _MainScreenState extends State<MainScreen> {
     DashboardScreen(),
     ProductsScreen(),
     CustomersScreen(),
+    CalculatorScreen(),
     SupplyItemsScreen(),
+    ProfileScreen(),
   ];
 
   @override
@@ -96,9 +117,19 @@ class _MainScreenState extends State<MainScreen> {
             label: 'Clientes',
           ),
           NavigationDestination(
+            icon: Icon(Icons.calculate_outlined),
+            selectedIcon: Icon(Icons.calculate),
+            label: 'Calcular',
+          ),
+          NavigationDestination(
             icon: Icon(Icons.inventory_2_outlined),
             selectedIcon: Icon(Icons.inventory_2),
             label: 'Insumos',
+          ),
+          NavigationDestination(
+            icon: Icon(Icons.person_outline),
+            selectedIcon: Icon(Icons.person),
+            label: 'Perfil',
           ),
         ],
       ),
