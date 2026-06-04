@@ -8,6 +8,7 @@ import 'package:brand_dashboard/features/costs/presentation/screens/calculator_s
 import 'package:brand_dashboard/features/products/presentation/screens/supply_items_screen.dart';
 import 'package:brand_dashboard/features/settings/presentation/screens/profile_screen.dart';
 import 'package:brand_dashboard/features/settings/presentation/providers/profile_provider.dart';
+import 'package:brand_dashboard/app/splash_screen.dart';
 
 class App extends StatelessWidget {
   const App({super.key});
@@ -25,8 +26,6 @@ class _AppWithTheme extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final profileAsync = ref.watch(brandProfileProvider);
-
-    // Use default color while loading
     final accentColor = profileAsync.value?.accentColor
         ?? const Color(0xFFB8860B);
 
@@ -35,7 +34,11 @@ class _AppWithTheme extends ConsumerWidget {
       debugShowCheckedModeBanner: false,
       themeMode: ThemeMode.dark,
       darkTheme: _buildDarkTheme(accentColor),
-      home: const MainScreen(),
+      initialRoute: '/',
+      routes: {
+        '/': (context) => const SplashScreen(),
+        '/home': (context) => const MainScreen(),
+      },
     );
   }
 
